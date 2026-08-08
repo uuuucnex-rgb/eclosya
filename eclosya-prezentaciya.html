@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eclosya — объём проекта</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --encre:#211B24; --encre-douce:#3A3040; --encre-pale:#6B6070;
+  --papier:#EFE9E1; --craie:#FAF7F3;
+  --prune:#5E3450; --prune-clair:#8A5A7C;
+  --laiton:#A8894F; --laiton-pale:#C7B189; --sauge:#77856C;
+  --ligne:rgba(33,27,36,.14); --ligne-fine:rgba(33,27,36,.08);
+  --mesure:78rem;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--papier);color:var(--encre);
+  font-family:'Manrope',system-ui,sans-serif;font-size:17px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:
+    repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(33,27,36,.012) 3px,rgba(33,27,36,.012) 4px),
+    repeating-linear-gradient(90deg,transparent,transparent 3px,rgba(33,27,36,.010) 3px,rgba(33,27,36,.010) 4px);
+}
+.enveloppe{position:relative;z-index:1;max-width:var(--mesure);margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+
+body.lang-fr .ru{display:none!important}
+body.lang-ru .fr{display:none!important}
+.bascule{
+  position:fixed;top:16px;right:16px;z-index:50;display:flex;
+  border:1px solid var(--ligne);border-radius:3px;overflow:hidden;
+  background:rgba(250,247,243,.94);backdrop-filter:blur(8px);
+  box-shadow:0 2px 12px rgba(33,27,36,.09);
+}
+.bascule button{
+  font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;
+  padding:9px 14px;border:none;background:none;color:var(--encre-pale);cursor:pointer;transition:all .18s ease;
+}
+.bascule button+button{border-left:1px solid var(--ligne)}
+.bascule button.actif{background:var(--prune);color:var(--craie)}
+.bascule button:hover:not(.actif){color:var(--prune)}
+
+h1,h2,h3{font-family:'Cormorant',Georgia,serif;font-weight:400;letter-spacing:-.01em}
+h1{font-size:clamp(40px,6.2vw,80px);line-height:1.03;font-weight:300}
+h2{font-size:clamp(28px,3.6vw,43px);line-height:1.13;margin-bottom:10px}
+h3{font-size:clamp(20px,2.1vw,26px);line-height:1.2}
+.eyebrow{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--laiton)}
+.chapo{font-size:clamp(17px,1.85vw,20px);color:var(--encre-douce);max-width:64ch;line-height:1.56}
+em.it{font-family:'Cormorant',serif;font-style:italic;font-size:1.14em}
+strong{font-weight:600}
+
+section{padding:clamp(56px,7.2vw,100px) 0;border-top:1px solid var(--ligne)}
+.entete{display:flex;gap:clamp(20px,4vw,52px);align-items:baseline;margin-bottom:clamp(28px,4vw,44px)}
+.repere{font-family:'Cormorant',serif;font-size:clamp(30px,3.6vw,46px);font-weight:300;color:var(--laiton-pale);line-height:1;flex:0 0 auto;min-width:1.6em}
+.entete-txt{flex:1 1 auto;min-width:0}
+
+.couverture{border-top:none;padding-top:clamp(52px,7vw,80px);padding-bottom:clamp(48px,6vw,78px)}
+.dossier{
+  display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;
+  padding-bottom:20px;margin-bottom:clamp(32px,4.5vw,52px);border-bottom:1px solid var(--ligne);
+  font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--encre-pale);
+}
+.dossier .marque{color:var(--prune)}
+.couverture h1{margin:0 0 22px;max-width:18ch}
+.couverture h1 .fin{display:block;font-style:italic;color:var(--prune)}
+.liens{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.lien{display:inline-flex;align-items:center;gap:10px;padding:13px 24px;border-radius:3px;text-decoration:none;font-size:15px;font-weight:600;transition:all .22s cubic-bezier(.22,.61,.36,1)}
+.lien-plein{background:var(--prune);color:var(--craie)}
+.lien-plein:hover{background:var(--encre)}
+.lien-vide{border:1px solid var(--ligne);color:var(--encre-douce)}
+.lien-vide:hover{border-color:var(--prune);color:var(--prune)}
+
+.compteurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;background:var(--ligne-fine);margin-top:clamp(38px,5vw,58px);border:1px solid var(--ligne-fine)}
+.compteur{background:var(--papier);padding:22px 20px}
+.compteur .n{font-family:'Cormorant',serif;font-size:clamp(36px,4.4vw,52px);font-weight:300;line-height:1;display:block}
+.compteur .l{font-size:11.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--encre-pale);margin-top:9px;display:block;line-height:1.35}
+
+.groupe{margin-bottom:30px}
+.groupe-titre{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--laiton);padding-bottom:8px;margin-bottom:12px;border-bottom:1px solid var(--ligne-fine);display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.groupe-titre .cnt{color:var(--encre-pale);font-weight:600;letter-spacing:.08em;white-space:nowrap}
+.ecrans{display:grid;grid-template-columns:repeat(auto-fill,minmax(222px,1fr));gap:2px 22px}
+.ecran{display:flex;align-items:baseline;gap:9px;padding:5px 0;font-size:15.5px;color:var(--encre-douce)}
+.ecran::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--laiton-pale);flex:0 0 auto;transform:translateY(-3px)}
+.ecran .v{margin-left:auto;font-size:9.5px;font-weight:700;letter-spacing:.09em;color:var(--laiton);border:1px solid var(--ligne);padding:1px 5px;border-radius:2px}
+
+.bande{margin-top:14px}
+.bande-piste{display:flex;height:74px;border:1px solid var(--ligne);border-radius:3px;overflow:hidden;background:var(--craie)}
+.bande-part{position:relative;overflow:hidden;border-right:1px solid rgba(250,247,243,.34);transform-origin:left;transform:scaleX(0);animation:pousse .95s cubic-bezier(.22,.61,.36,1) forwards}
+.bande-part:last-child{border-right:none}
+@keyframes pousse{to{transform:scaleX(1)}}
+.b1{flex:27;background:var(--prune);animation-delay:.05s}
+.b2{flex:19;background:var(--prune-clair);animation-delay:.22s}
+.b3{flex:24;background:var(--laiton);animation-delay:.39s}
+.b4{flex:16;background:var(--sauge);animation-delay:.56s}
+.b5{flex:14;background:var(--encre-douce);animation-delay:.73s}
+.legende{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:20px 26px;margin-top:26px}
+.leg{display:flex;gap:11px;align-items:flex-start}
+.puce{width:11px;height:11px;border-radius:2px;flex:0 0 auto;margin-top:6px}
+.leg .t{font-size:15px;font-weight:600;line-height:1.35;display:block}
+.leg .j{font-size:13px;color:var(--encre-pale);display:block;margin-top:2px}
+
+table{width:100%;border-collapse:collapse;font-size:15.5px}
+caption{text-align:left;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--laiton);padding-bottom:11px}
+th{text-align:left;font-size:11px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--encre-pale);padding:0 0 11px;border-bottom:1px solid var(--ligne)}
+th.n,td.n{text-align:right;white-space:nowrap}
+td{padding:13px 0;border-bottom:1px solid var(--ligne-fine);vertical-align:top}
+tbody tr:last-child td{border-bottom:none}
+tfoot td{border-top:1px solid var(--ligne);border-bottom:none;padding-top:15px;font-weight:600}
+td .sous{display:block;font-size:13.5px;color:var(--encre-pale);margin-top:3px;line-height:1.5}
+
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--ligne);border:1px solid var(--ligne);border-radius:3px;overflow:hidden}
+.duo>div{background:var(--papier);padding:clamp(24px,3vw,36px)}
+.duo .moi{background:var(--craie)}
+.duo h3{margin-bottom:6px}
+.duo .sous-titre{font-size:13.5px;color:var(--encre-pale);margin-bottom:20px;line-height:1.5}
+.liste{list-style:none}
+.liste li{position:relative;padding:9px 0 9px 22px;font-size:15.5px;border-bottom:1px solid var(--ligne-fine);line-height:1.5}
+.liste li:last-child{border-bottom:none}
+.liste li::before{content:'';position:absolute;left:0;top:17px;width:9px;height:1px;background:var(--laiton)}
+.liste li b{font-weight:600}
+.liste li span{display:block;font-size:13.5px;color:var(--encre-pale);margin-top:2px}
+
+.encadre{border-left:2px solid var(--prune);background:var(--craie);padding:clamp(22px,3vw,30px) clamp(22px,3vw,32px);margin-top:30px;border-radius:0 3px 3px 0}
+.encadre .t{font-family:'Cormorant',serif;font-size:23px;margin-bottom:9px;line-height:1.25}
+.encadre p{font-size:15.5px;color:var(--encre-douce);max-width:72ch}
+.encadre p+p{margin-top:11px}
+
+.sanctions{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:1px;background:var(--ligne-fine);border:1px solid var(--ligne-fine);margin-top:26px}
+.sanction{background:var(--papier);padding:22px}
+.sanction .m{font-family:'Cormorant',serif;font-size:clamp(29px,3.3vw,37px);font-weight:300;color:var(--prune);line-height:1;display:block}
+.sanction .d{font-size:14px;color:var(--encre-douce);margin-top:10px;line-height:1.5}
+.sanction .s{font-size:12px;color:var(--encre-pale);margin-top:8px;display:block}
+
+.marche{display:grid;grid-template-columns:1fr 1fr;gap:clamp(22px,3.4vw,46px);align-items:start}
+.colonne-titre{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;padding-bottom:11px;border-bottom:1px solid var(--ligne);margin-bottom:4px}
+.ct-marche{color:var(--encre-pale)}
+.ct-offre{color:var(--prune)}
+.ligne-prix{display:flex;justify-content:space-between;gap:18px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--ligne-fine)}
+.ligne-prix:last-child{border-bottom:none}
+.ligne-prix .quoi{font-size:15.5px;line-height:1.4}
+.ligne-prix .quoi span.sub{display:block;font-size:13px;color:var(--encre-pale);margin-top:2px}
+.ligne-prix .combien{font-family:'Cormorant',serif;font-size:23px;white-space:nowrap;text-align:right}
+.ligne-prix .combien .eq{display:block;font-family:'Manrope',sans-serif;font-size:12px;color:var(--encre-pale);margin-top:2px;letter-spacing:.02em}
+.ligne-prix.fort .combien{font-size:29px;color:var(--prune)}
+.total{display:flex;justify-content:space-between;gap:18px;align-items:baseline;margin-top:16px;padding-top:16px;border-top:1px solid var(--ligne)}
+.total .l{font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--encre-pale)}
+.total .v{font-family:'Cormorant',serif;font-size:clamp(27px,3.1vw,35px);font-weight:300;text-align:right}
+.total .v.accent{color:var(--prune)}
+.total .v .eq{display:block;font-family:'Manrope',sans-serif;font-size:12.5px;color:var(--encre-pale);margin-top:3px;letter-spacing:.02em}
+
+.ecart{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--ligne-fine);border:1px solid var(--ligne-fine);margin-top:34px}
+.ecart>div{background:var(--craie);padding:24px}
+.ecart .m{font-family:'Cormorant',serif;font-size:clamp(32px,3.8vw,44px);font-weight:300;color:var(--prune);line-height:1;display:block}
+.ecart .d{font-size:14.5px;color:var(--encre-douce);margin-top:11px;line-height:1.5}
+
+.etapes{border-top:1px solid var(--ligne)}
+.etape{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(16px,3vw,34px);align-items:baseline;padding:26px 0;border-bottom:1px solid var(--ligne-fine)}
+.etape .num{font-family:'Cormorant',serif;font-size:29px;font-weight:300;color:var(--laiton-pale);line-height:1}
+.etape .nom{font-family:'Cormorant',serif;font-size:25px;line-height:1.2;display:block;margin-bottom:7px}
+.etape .det{font-size:15px;color:var(--encre-douce);line-height:1.6;max-width:62ch}
+.etape .det p+p{margin-top:10px}
+.etape .prix{font-family:'Cormorant',serif;font-size:28px;white-space:nowrap;text-align:right}
+.etape .prix .eq{display:block;font-family:'Manrope',sans-serif;font-size:12.5px;color:var(--encre-pale);margin-top:3px}
+.etape .duree{display:block;font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--encre-pale);margin-top:7px;text-align:right}
+.etape.souligne{border-left:2px solid var(--prune);padding-left:18px;background:linear-gradient(90deg,rgba(94,52,80,.05),transparent 72%)}
+
+.cloture{background:var(--encre);color:var(--craie);margin-top:clamp(56px,7vw,94px);border-top:none;padding-top:clamp(50px,6vw,80px)}
+.ancre{display:grid;grid-template-columns:1fr auto;gap:clamp(22px,4vw,54px);align-items:end}
+.ancre .l .k{font-family:'Manrope',sans-serif;font-size:11px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:var(--laiton-pale);display:block;margin-bottom:14px}
+.ancre .l .t{font-family:'Cormorant',serif;font-size:clamp(26px,3.2vw,38px);font-weight:300;line-height:1.15;display:block;color:var(--craie);max-width:24ch}
+.ancre .l .d{font-size:14.5px;color:rgba(250,247,243,.5);margin-top:14px;max-width:50ch;line-height:1.55;display:block}
+.ancre .v{font-family:'Cormorant',serif;font-size:clamp(40px,5.6vw,68px);font-weight:300;color:var(--laiton-pale);line-height:1;text-align:right;white-space:nowrap}
+.ancre .v .eq{display:block;font-family:'Manrope',sans-serif;font-size:13px;color:rgba(250,247,243,.45);margin-top:10px;letter-spacing:.02em;white-space:normal;max-width:20ch;margin-left:auto}
+.pied{padding:30px 0 46px;font-size:13px;color:rgba(250,247,243,.42);line-height:1.65;border-top:1px solid rgba(250,247,243,.12);margin-top:clamp(40px,5vw,64px)}
+.pied a{color:var(--laiton-pale);text-decoration:none;border-bottom:1px solid rgba(199,177,137,.3)}
+
+@media(max-width:860px){
+  .duo,.marche{grid-template-columns:1fr}
+  .entete{flex-direction:column;gap:8px}
+  .repere{font-size:26px}
+  .etape{grid-template-columns:auto 1fr;row-gap:14px}
+  .etape .prix,.etape .duree{grid-column:2;text-align:left}
+  .bande-piste{height:58px}
+  .ancre{grid-template-columns:1fr}
+  .ancre .v{text-align:left}
+  .ancre .v .eq{margin-left:0}
+}
+@media(max-width:520px){
+  body{font-size:16px}
+  .ecrans{grid-template-columns:1fr}
+  .bascule{top:10px;right:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .bande-part{transform:scaleX(1)}
+  html{scroll-behavior:auto}
+}
+@media print{
+  body::before,.bascule,.liens{display:none}
+  .cloture{background:none;color:var(--encre)}
+  .ancre .l .t,.ancre .v{color:var(--encre)}
+  section{page-break-inside:avoid}
+}
+</style>
+</head>
+<body class="lang-ru">
+
+<div class="bascule">
+  <button id="bRu" class="actif" onclick="setLang('ru')">РУС</button>
+  <button id="bFr" onclick="setLang('fr')">FR</button>
+</div>
+
+<div class="enveloppe">
+
+<!-- ═══ ОБЛОЖКА ═══ -->
+<section class="couverture">
+  <div class="dossier">
+    <span class="marque">Eclosya</span>
+    <span><span class="ru">Объём работ и условия</span><span class="fr">Périmètre et conditions</span></span>
+    <span><span class="ru">Август 2026</span><span class="fr">Août 2026</span></span>
+  </div>
+
+  <h1>
+    <span class="ru">Вы посмотрели прототип.<span class="fin">Теперь — что под ним.</span></span>
+    <span class="fr">Vous avez vu le prototype.<span class="fin">Voici ce qu'il y a dessous.</span></span>
+  </h1>
+
+  <p class="chapo">
+    <span class="ru">Прототип работает, ставится на телефон и содержит все 21 раздел задания. Этот документ нужен для одного: показать в цифрах, сколько за ним стоит работы — и что в проекте остаётся на вашей стороне.</span>
+    <span class="fr">Le prototype fonctionne, il s'installe sur le téléphone et couvre les vingt et une sections du cahier des charges. Ce document a un seul but : montrer en chiffres le travail que cela représente — et ce qui, dans ce projet, reste de votre côté.</span>
+  </p>
+
+  <div class="liens">
+    <a class="lien lien-plein" href="https://eclosya.surge.sh" target="_blank" rel="noopener"><span class="ru">Открыть прототип</span><span class="fr">Ouvrir le prototype</span></a>
+    <a class="lien lien-vide" href="#perimetre"><span class="ru">К объёму работ</span><span class="fr">Voir le périmètre</span></a>
+  </div>
+
+  <div class="compteurs">
+    <div class="compteur"><span class="n">41</span><span class="l"><span class="ru">Экран нарисован</span><span class="fr">Écrans dessinés</span></span></div>
+    <div class="compteur"><span class="n">21</span><span class="l"><span class="ru">Раздел в задании</span><span class="fr">Sections au cahier</span></span></div>
+    <div class="compteur"><span class="n">1 076</span><span class="l"><span class="ru">Текстов и материалов</span><span class="fr">Textes et contenus</span></span></div>
+    <div class="compteur"><span class="n">75</span><span class="l"><span class="ru">Рабочих дней</span><span class="fr">Jours de travail</span></span></div>
+    <div class="compteur"><span class="n">8</span><span class="l"><span class="ru">Требований закона</span><span class="fr">Obligations légales</span></span></div>
+  </div>
+</section>
+
+<!-- ═══ I · ОПИСЬ ═══ -->
+<section id="perimetre">
+  <div class="entete">
+    <div class="repere">I</div>
+    <div class="entete-txt">
+      <p class="eyebrow"><span class="ru">Опись</span><span class="fr">L'inventaire</span></p>
+      <h2><span class="ru">41 экран</span><span class="fr">Quarante et un écrans</span></h2>
+      <p class="chapo">
+        <span class="ru">В задании 21 раздел. В интерфейсе они разворачиваются в 41 экран — у каждого свои состояния, пустые сценарии и место в очереди. Вот полный список.</span>
+        <span class="fr">Le cahier des charges décrit vingt et une sections. Traduites en interface, elles deviennent quarante et un écrans distincts, chacun avec ses états, ses cas vides et sa place dans l'ordre de sortie. Voici la liste complète.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Вход и знакомство</span><span class="fr">Accueil et entrée</span></span><span class="cnt"><span class="ru">4 экрана</span><span class="fr">4 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Заставка</span><span class="fr">Ouverture</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Приветственный опрос</span><span class="fr">Questionnaire d'accueil</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Согласие на данные</span><span class="fr">Consentement</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Возвращение после паузы</span><span class="fr">Retour après absence</span><span class="v">V1</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Каждый день</span><span class="fr">Le quotidien</span></span><span class="cnt"><span class="ru">5 экранов</span><span class="fr">5 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Сегодня</span><span class="fr">Aujourd'hui</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Сезонные версии</span><span class="fr">Variantes saisonnières</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Ритуал дня</span><span class="fr">Mon rituel du jour</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Ритуал завершён</span><span class="fr">Rituel accompli</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Уведомления</span><span class="fr">Notifications</span><span class="v">V1</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Практики</span><span class="fr">Pratiques</span></span><span class="cnt"><span class="ru">5 экранов</span><span class="fr">5 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Медитации</span><span class="fr">Méditations</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Аудиоплеер</span><span class="fr">Lecteur audio</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Дыхательная практика</span><span class="fr">Respiration guidée</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Что мне нужно сегодня</span><span class="fr">De quoi ai-je besoin</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Готовый набор</span><span class="fr">L'ensemble proposé</span><span class="v">V1</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Личные трекеры</span><span class="fr">Suivis personnels</span></span><span class="cnt"><span class="ru">5 экранов</span><span class="fr">5 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Дневник</span><span class="fr">Mon journal</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Перечитать записи</span><span class="fr">Relecture du journal</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Привычки</span><span class="fr">Mes habitudes</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Настроение</span><span class="fr">Mon humeur</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Мой путь</span><span class="fr">Mon chemin</span><span class="v">V1</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Контент</span><span class="fr">Contenus</span></span><span class="cnt"><span class="ru">6 экранов</span><span class="fr">6 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Библиотека</span><span class="fr">Bibliothèque</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Аффирмации</span><span class="fr">Affirmations</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Программы на 7 дней</span><span class="fr">Programmes 7 jours</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Челленджи</span><span class="fr">Défis</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Моя коллекция</span><span class="fr">Ma collection</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Эмоции</span><span class="fr">Émotions</span><span class="v">V2</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Женское здоровье</span><span class="fr">Santé féminine</span></span><span class="cnt"><span class="ru">5 экранов</span><span class="fr">5 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Сон</span><span class="fr">Sommeil</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Энергия</span><span class="fr">Énergie</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Движение</span><span class="fr">Mouvement</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Питание</span><span class="fr">Alimentation</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Цикл</span><span class="fr">Cycle</span><span class="v">V2</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Женственность и отношения</span><span class="fr">Féminité et liens</span></span><span class="cnt"><span class="ru">3 экрана</span><span class="fr">3 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Женственность</span><span class="fr">Féminité</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Отношения</span><span class="fr">Relations</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Мой баланс</span><span class="fr">Mon équilibre</span><span class="v">V2</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span>Premium</span><span class="cnt"><span class="ru">4 экрана</span><span class="fr">4 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran">Eclosya Premium<span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Курсы</span><span class="fr">Les parcours</span><span class="v">V2</span></div>
+      <div class="ecran"><span class="ru">Закрытый клуб</span><span class="fr">Le Cercle</span><span class="v">V3</span></div>
+      <div class="ecran"><span class="ru">Сообщество</span><span class="fr">Communauté</span><span class="v">V3</span></div>
+    </div>
+  </div>
+
+  <div class="groupe">
+    <div class="groupe-titre"><span><span class="ru">Аккаунт и соответствие закону</span><span class="fr">Compte et conformité</span></span><span class="cnt"><span class="ru">4 экрана</span><span class="fr">4 écrans</span></span></div>
+    <div class="ecrans">
+      <div class="ecran"><span class="ru">Мой аккаунт</span><span class="fr">Mon compte</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Конфиденциальность</span><span class="fr">Confidentialité</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Отмена подписки</span><span class="fr">Résiliation</span><span class="v">V1</span></div>
+      <div class="ecran"><span class="ru">Специалисты</span><span class="fr">Les voix</span><span class="v">V3</span></div>
+    </div>
+  </div>
+
+  <div class="encadre">
+    <div class="t"><span class="ru">Из задания не убрано ничего</span><span class="fr">Rien n'a été retiré du cahier des charges</span></div>
+    <p>
+      <span class="ru">Пометки <strong>V1</strong>, <strong>V2</strong>, <strong>V3</strong> — это очередь, а не отказ. V1 уходит в запуск и приносит первые подписки. V2 подключается, когда модель себя подтвердила. V3 имеет смысл только там, где уже есть живое сообщество. Строить все 21 раздел сразу — это примерно 14 месяцев до первой продажи.</span>
+      <span class="fr">Les mentions <strong>V1</strong>, <strong>V2</strong> et <strong>V3</strong> indiquent un ordre, pas un refus. Le V1 part au lancement et génère les premiers abonnements. Le V2 s'ajoute une fois le modèle confirmé. Le V3 n'a de sens qu'avec une communauté déjà vivante. Construire les vingt et une sections d'un seul bloc, c'est environ quatorze mois avant la première vente.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ═══ II · ПОЛОСА ═══ -->
+<section>
+  <div class="entete">
+    <div class="repere">II</div>
+    <div class="entete-txt">
+      <p class="eyebrow"><span class="ru">Видимое и невидимое</span><span class="fr">Ce qui se voit, ce qui ne se voit pas</span></p>
+      <h2><span class="ru">Экраны — это четверть работы</span><span class="fr">Les écrans sont le quart du travail</span></h2>
+      <p class="chapo">
+        <span class="ru">По прототипу этого не видно, и в этом главная сложность разговора: интерфейс — то, что показывают, а не то, на что уходит время. Вот как на самом деле распределяются 75 дней.</span>
+        <span class="fr">Le prototype ne le montre pas, et c'est là toute la difficulté : l'interface est ce qui se voit, pas ce qui prend le temps. Voici la répartition réelle des soixante-quinze jours.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="bande">
+    <div class="bande-piste">
+      <div class="bande-part b1"></div><div class="bande-part b2"></div><div class="bande-part b3"></div><div class="bande-part b4"></div><div class="bande-part b5"></div>
+    </div>
+    <div class="legende">
+      <div class="leg"><span class="puce" style="background:var(--prune)"></span><span>
+        <span class="t"><span class="ru">Интерфейсы и экраны</span><span class="fr">Interfaces et écrans</span></span>
+        <span class="j"><span class="ru">20 дней — то, что вы видите</span><span class="fr">20 jours · ce que vous voyez</span></span></span></div>
+      <div class="leg"><span class="puce" style="background:var(--prune-clair)"></span><span>
+        <span class="t"><span class="ru">Архитектура и данные</span><span class="fr">Architecture et données</span></span>
+        <span class="j"><span class="ru">14 дней — модель контента, состояние, сохранение</span><span class="fr">14 jours · modèle de contenu, état, sauvegarde</span></span></span></div>
+      <div class="leg"><span class="puce" style="background:var(--laiton)"></span><span>
+        <span class="t"><span class="ru">Контент</span><span class="fr">Contenu</span></span>
+        <span class="j"><span class="ru">18 дней — тексты, озвучка, сведение аудио</span><span class="fr">18 jours · textes, voix, montage audio</span></span></span></div>
+      <div class="leg"><span class="puce" style="background:var(--sauge)"></span><span>
+        <span class="t"><span class="ru">Закон и платежи</span><span class="fr">Conformité et paiement</span></span>
+        <span class="j"><span class="ru">12 дней — GDPR, отмена подписки, НДС, биллинг</span><span class="fr">12 jours · RGPD, résiliation, TVA, abonnements</span></span></span></div>
+      <div class="leg"><span class="puce" style="background:var(--encre-douce)"></span><span>
+        <span class="t"><span class="ru">Тесты и запуск</span><span class="fr">Tests et mise en ligne</span></span>
+        <span class="j"><span class="ru">11 дней — живые устройства, скорость, правки</span><span class="fr">11 jours · appareils réels, performance, correctifs</span></span></span></div>
+    </div>
+  </div>
+
+  <div class="encadre">
+    <div class="t"><span class="ru">Как это выглядит на одном экране</span><span class="fr">Un exemple concret</span></div>
+    <p>
+      <span class="ru">Экран <em class="it">«Ритуал дня»</em> показывает восемь шагов. За ним стоит движок: каждое утро собирает новый ритуал, месяц не повторяется, смотрит на вчерашнее настроение, помнит, где вы остановились, если закрыли приложение на середине, и работает без интернета.</span>
+      <span class="fr">L'écran <em class="it">Mon rituel du jour</em> affiche huit étapes. Derrière, il y a un moteur : il compose un rituel différent chaque matin, ne se répète pas sur trente jours, tient compte de l'humeur notée la veille, reprend là où l'on s'est arrêtée si l'application est fermée en cours de route, et fonctionne sans connexion.</span>
+    </p>
+    <p>
+      <span class="ru">Экран рисуется за день. Движок — за семь.</span>
+      <span class="fr">L'écran se dessine en une journée. Le moteur en demande sept.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ═══ III · КОНТЕНТ ═══ -->
+<section>
+  <div class="entete">
+    <div class="repere">III</div>
+    <div class="entete-txt">
+      <p class="eyebrow"><span class="ru">Материал</span><span class="fr">La matière</span></p>
+      <h2><span class="ru">1076 единиц контента</span><span class="fr">Mille soixante-seize contenus</span></h2>
+      <p class="chapo">
+        <span class="ru">Приложение о благополучии — это не программа, внутри которой лежит контент. Это контент, вокруг которого собрана программа. Эту часть недооценивают всегда, и она же самая долгая.</span>
+        <span class="fr">Une application de bien-être n'est pas un logiciel avec du contenu dedans. C'est du contenu avec un logiciel autour. C'est le poste que l'on sous-estime toujours, et le plus long de tous.</span>
+      </p>
+    </div>
+  </div>
+
+  <table>
+    <caption><span class="ru">Что нужно произвести к запуску</span><span class="fr">Production nécessaire au lancement</span></caption>
+    <thead><tr><th><span class="ru">Что</span><span class="fr">Élément</span></th><th class="n"><span class="ru">Штук</span><span class="fr">Unités</span></th></tr></thead>
+    <tbody>
+      <tr><td><span class="ru">Медитации с голосом<span class="sous">Текст, запись, сведение — по 8–12 минут каждая</span></span><span class="fr">Méditations guidées<span class="sous">Texte, enregistrement, montage — 8 à 12 minutes chacune</span></span></td><td class="n">60</td></tr>
+      <tr><td><span class="ru">Дыхательные практики<span class="sous">Шесть ситуаций, три длительности</span></span><span class="fr">Pratiques respiratoires<span class="sous">Six situations, trois durées</span></span></td><td class="n">18</td></tr>
+      <tr><td><span class="ru">Ритуалы дня<span class="sous">По восемь шагов, месяц без повторов</span></span><span class="fr">Rituels quotidiens<span class="sous">Huit étapes chacun, trente jours sans répétition</span></span></td><td class="n">90</td></tr>
+      <tr><td><span class="ru">Аффирмации<span class="sous">Семь ситуаций использования</span></span><span class="fr">Affirmations<span class="sous">Sept contextes d'usage</span></span></td><td class="n">200</td></tr>
+      <tr><td><span class="ru">Цитаты дня</span><span class="fr">Citations du jour</span></td><td class="n">120</td></tr>
+      <tr><td><span class="ru">Вопросы для дневника</span><span class="fr">Questions de journal</span></td><td class="n">120</td></tr>
+      <tr><td><span class="ru">Статьи<span class="sous">В среднем по 800 слов</span></span><span class="fr">Articles<span class="sous">Huit cents mots en moyenne</span></span></td><td class="n">40</td></tr>
+      <tr><td><span class="ru">Дни программ<span class="sous">Четыре программы по семь дней</span></span><span class="fr">Journées de programmes<span class="sous">Quatre programmes de sept jours</span></span></td><td class="n">28</td></tr>
+      <tr><td><span class="ru">Тексты интерфейса<span class="sous">Кнопки, заголовки, пустые состояния, сообщения, пуши</span></span><span class="fr">Textes d'interface<span class="sous">Boutons, titres, états vides, messages, notifications</span></span></td><td class="n">400</td></tr>
+    </tbody>
+    <tfoot><tr><td><span class="ru">Всего</span><span class="fr">Total</span></td><td class="n">1 076</td></tr></tfoot>
+  </table>
+</section>
+
+<!-- ═══ IV · ЗАКОН ═══ -->
+<section>
+  <div class="entete">
+    <div class="repere">IV</div>
+    <div class="entete-txt">
+      <p class="eyebrow"><span class="ru">Французская и европейская рамка</span><span class="fr">Le cadre français et européen</span></p>
+      <h2><span class="ru">Восемь требований и граница ответственности</span><span class="fr">Huit obligations et une frontière nette</span></h2>
+      <p class="chapo">
+        <span class="ru">Приложение, которое трогает сон, настроение и цикл, попадает в регулируемую зону. Часть требований закрывается кодом — это моя работа. Часть лежит на компании, которая издаёт приложение, — и сделать её за вас нельзя.</span>
+        <span class="fr">Une application qui touche au sommeil, à l'humeur et au cycle entre dans un domaine encadré. Une partie des obligations se règle dans le code — c'est mon travail. L'autre relève de l'entreprise qui édite l'application, et personne ne peut la traiter à sa place.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="sanctions">
+    <div class="sanction">
+      <span class="m">380 000 €</span>
+      <div class="d"><span class="ru">Штраф CNIL издателю за данные о здоровье, собранные через онлайн-опросники.</span><span class="fr">Sanction de la CNIL contre un éditeur pour des données de santé collectées via des questionnaires en ligne.</span></div>
+      <span class="s"><span class="ru">Решение SAN-2023-006</span><span class="fr">Délibération SAN-2023-006</span></span>
+    </div>
+    <div class="sanction">
+      <span class="m">75 000 €</span>
+      <div class="d"><span class="ru">Штраф за отсутствие отмены подписки онлайн в три клика. DGCCRF проверяет активно.</span><span class="fr">Amende encourue faute de résiliation en ligne accessible en trois clics. La DGCCRF contrôle activement.</span></div>
+      <span class="s"><span class="ru">Статья L215-1-1, действует с 2023 года</span><span class="fr">Article L215-1-1 · en vigueur depuis 2023</span></span>
+    </div>
+    <div class="sanction">
+      <span class="m"><span class="ru">1 год</span><span class="fr">1 an</span></span>
+      <div class="d"><span class="ru">До такого срока растягивается право покупателя на отказ, если в интерфейсе нет функции отказа.</span><span class="fr">Durée à laquelle passe le droit de rétractation si la fonction de renonciation en ligne est absente.</span></div>
+      <span class="s"><span class="ru">Обязательно с 19 июня 2026 года</span><span class="fr">Obligatoire depuis le 19 juin 2026</span></span>
+    </div>
+  </div>
+
+  <div class="duo" style="margin-top:34px">
+    <div class="moi">
+      <h3><span class="ru">Беру на себя я</span><span class="fr">Ce que je prends en charge</span></h3>
+      <p class="sous-titre"><span class="ru">Входит в разработку, без доплат</span><span class="fr">Inclus dans le développement, sans supplément</span></p>
+      <ul class="liste">
+        <li class="ru"><b>Архитектура согласий</b><span>Согласие на данные о здоровье отдельно от маркетингового, без преднажатых галочек, срок хранения на экране</span></li>
+        <li class="fr"><b>Architecture du consentement</b><span>Consentement santé séparé du consentement marketing, jamais pré-coché, durée de conservation affichée</span></li>
+        <li class="ru"><b>Отмена подписки в три шага</b><span>Доступна всегда, не спрятана в подменю</span></li>
+        <li class="fr"><b>Parcours de résiliation en trois étapes</b><span>Accessible en permanence, jamais enfoui dans un sous-menu</span></li>
+        <li class="ru"><b>Функция отказа от договора</b><span>Отдельно от отмены подписки, по режиму, вступившему в силу в июне 2026</span></li>
+        <li class="fr"><b>Fonction de renonciation en ligne</b><span>Distincte de la résiliation, conforme au régime entré en vigueur en juin 2026</span></li>
+        <li class="ru"><b>Выгрузка и удаление данных</b><span>Две работающие кнопки, а не два абзаца в политике</span></li>
+        <li class="fr"><b>Export et suppression des données</b><span>Deux actions réellement fonctionnelles, pas deux mentions dans la politique</span></li>
+        <li class="ru"><b>Хостинг внутри ЕС</b><span>Никакой передачи за пределы Евросоюза, включая аудиофайлы</span></li>
+        <li class="fr"><b>Hébergement en Union européenne</b><span>Aucun transfert hors UE, y compris pour les fichiers audio</span></li>
+        <li class="ru"><b>Удержание в статусе «благополучие»</b><span>Лексика, формулировки и функции подобраны так, чтобы не свалиться в режим хранения медицинских данных: его сертификация стоит от 20 000 до 80 000 € за три года</span></li>
+        <li class="fr"><b>Périmètre « bien-être » préservé</b><span>Vocabulaire, formulations et fonctionnalités calibrés pour ne pas basculer dans le régime des données de santé hébergées, dont la certification coûte de 20 000 à 80 000 € sur trois ans</span></li>
+        <li class="ru"><b>Не медицинское изделие</b><span>Цикл остаётся дневником: ни прогнозов, ни окна фертильности. Эта граница избавляет от маркировки CE</span></li>
+        <li class="fr"><b>Pas de dispositif médical</b><span>Le cycle reste un carnet : aucune prédiction, aucune fenêtre de fertilité. C'est cette ligne qui évite un marquage CE.</span></li>
+        <li class="ru"><b>Защищённые звания исключены</b><span>«Психолог», «гинеколог», «диетолог», «акушерка» не встречаются в интерфейсе нигде</span></li>
+        <li class="fr"><b>Titres protégés écartés</b><span>Psychologue, gynécologue, diététicien et sage-femme n'apparaissent nulle part dans l'interface</span></li>
+      </ul>
+    </div>
+    <div>
+      <h3><span class="ru">Остаётся за вами</span><span class="fr">Ce qui reste de votre côté</span></h3>
+      <p class="sous-titre"><span class="ru">Запускается параллельно разработке</span><span class="fr">À engager en parallèle du développement</span></p>
+      <ul class="liste">
+        <li class="ru"><b>Юрлицо и банковский счёт</b><span>Именно оно издаёт приложение и отвечает за содержание</span></li>
+        <li class="fr"><b>Entité juridique et compte bancaire</b><span>C'est elle qui édite l'application et porte la responsabilité éditoriale</span></li>
+        <li class="ru"><b>Договорные документы</b><span>CGV, CGU, политика конфиденциальности, mentions légales — их составляет французский адвокат. Точный список пунктов даю я</span></li>
+        <li class="fr"><b>Documents contractuels</b><span>CGV, CGU, politique de confidentialité, mentions légales, rédigés par un avocat français. Je fournis la liste précise des points à couvrir.</span></li>
+        <li class="ru"><b>Реестр обработки данных по GDPR</b><span>И названный контакт для запросов пользовательниц</span></li>
+        <li class="fr"><b>Registre des traitements RGPD</b><span>Et un contact identifié pour les demandes des utilisatrices</span></li>
+        <li class="ru"><b>Приём платежей</b><span>Stripe, если юрлицо европейское. Если нет — посредник, который берёт НДС на себя</span></li>
+        <li class="fr"><b>Solution d'encaissement</b><span>Stripe si l'entité est européenne, sinon un revendeur qui prend la TVA à sa charge</span></li>
+        <li class="ru"><b>НДС 20 % и режим OSS</b><span>Цифровые услуги облагаются по месту жительства покупательницы</span></li>
+        <li class="fr"><b>TVA à 20 % et régime OSS</b><span>Les services numériques sont taxés au lieu de résidence de la cliente</span></li>
+        <li class="ru"><b>Проверка названия в INPI</b><span>Пять минут — до того, как фиксировать айдентику</span></li>
+        <li class="fr"><b>Vérification INPI du nom</b><span>Cinq minutes, avant de figer l'identité visuelle</span></li>
+        <li class="ru"><b>Лицензии на музыку, голос и изображения</b><span>С явным коммерческим использованием по каждому элементу</span></li>
+        <li class="fr"><b>Licences musique, voix et images</b><span>Usage commercial explicite pour chaque élément</span></li>
+        <li class="ru"><b>Редакторская вычитка публикуемых текстов</b><span>Финальное утверждение содержания остаётся за вами как за издателем</span></li>
+        <li class="fr"><b>Validation éditoriale des textes publiés</b><span>L'approbation finale du contenu vous revient en tant qu'éditrice</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="encadre">
+    <div class="t"><span class="ru">Почему здесь вообще про штрафы</span><span class="fr">Pourquoi ce document parle d'amendes</span></div>
+    <p>
+      <span class="ru">Потому что приветственный опрос спрашивает про сон и настроение. Это ровно тот случай, за который французский издатель получил 380 000 €. Отказываться от опроса не надо — без него не будет конверсии. Надо построить его правильно с первого дня: сейчас это несколько часов, после запуска — почти неисправимо.</span>
+      <span class="fr">Parce que le questionnaire d'accueil pose des questions sur le sommeil et l'humeur. C'est exactement le cas qui a valu 380 000 € à un éditeur français. Il ne faut pas renoncer au questionnaire : sans lui, pas de conversion. Il faut le construire correctement dès le premier jour — quelques heures maintenant, presque irréparable après le lancement.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ═══ V · РЫНОК ═══ -->
+<section>
+  <div class="entete">
+    <div class="repere">V</div>
+    <div class="entete-txt">
+      <p class="eyebrow"><span class="ru">Условия рынка</span><span class="fr">Les conditions du marché</span></p>
+      <h2><span class="ru">Сколько это стоит во Франции</span><span class="fr">Ce que cela coûte en France</span></h2>
+      <p class="chapo">
+        <span class="ru">Сначала — цены французского рынка на 2026 год. Затем — моё предложение на тот же объём работ.</span>
+        <span class="fr">D'abord les prix du marché français en 2026. Ensuite ma proposition, pour le même périmètre.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="marche">
+    <div>
+      <div class="colonne-titre ct-marche"><span class="ru">Французский рынок, 2026</span><span class="fr">Marché français, 2026</span></div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Минимальный бюджет приложения<span class="sub">Нижняя граница по рынку</span></span><span class="fr">Budget minimum d'une application<span class="sub">Plancher constaté sur le marché</span></span></div><div class="combien">15 000 €</div></div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Медианный бюджет<span class="sub">По всем категориям</span></span><span class="fr">Budget médian<span class="sub">Toutes catégories confondues</span></span></div><div class="combien">30 000 €</div></div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Платформа с контентом и подписками<span class="sub">То, что описано в задании</span></span><span class="fr">Plateforme avec contenu et abonnements<span class="sub">Ce que décrit le cahier des charges</span></span></div><div class="combien">80 000 €+</div></div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Ставка разработчика<span class="sub">За один рабочий день</span></span><span class="fr">Tarif d'un développeur<span class="sub">Par jour de travail</span></span></div><div class="combien">450 – 850 €</div></div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Срок до готового приложения<span class="sub">Типовой цикл агентства</span></span><span class="fr">Délai jusqu'à l'application livrée<span class="sub">Cycle habituel en agence</span></span></div><div class="combien"><span class="ru">от 6 мес.</span><span class="fr">6 mois +</span></div></div>
+      <div class="total"><div class="l"><span class="ru">75 дней по медианной ставке</span><span class="fr">75 jours au tarif médian</span></div><div class="v">41 250 €</div></div>
+    </div>
+
+    <div>
+      <div class="colonne-titre ct-offre"><span class="ru">Моё предложение</span><span class="fr">Ma proposition</span></div>
+      <div class="ligne-prix fort">
+        <div class="quoi"><span class="ru">Приложение целиком<span class="sub">Все восемь модулей V1, контент, подписки, соответствие закону, публикация</span></span><span class="fr">L'application complète<span class="sub">Les huit modules du V1, le contenu, les abonnements, la conformité, la publication</span></span></div>
+        <div class="combien"><span class="ru">400 000 ₽<span class="eq">≈ 4 200 €</span></span><span class="fr">4 200 €<span class="eq">400 000 ₽</span></span></div>
+      </div>
+      <div class="ligne-prix">
+        <div class="quoi"><span class="ru">Первый этап<span class="sub">Входит в общую сумму, оплачивается отдельно</span></span><span class="fr">Première étape<span class="sub">Comprise dans le total, réglée séparément</span></span></div>
+        <div class="combien"><span class="ru">250 000 ₽<span class="eq">≈ 2 600 €</span></span><span class="fr">2 600 €<span class="eq">250 000 ₽</span></span></div>
+      </div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Первые данные по спросу<span class="sub">С момента старта</span></span><span class="fr">Premières données sur la demande<span class="sub">À partir du démarrage</span></span></div><div class="combien"><span class="ru">5 недель</span><span class="fr">5 semaines</span></div></div>
+      <div class="ligne-prix"><div class="quoi"><span class="ru">Срок до готового приложения<span class="sub">Включая первый этап</span></span><span class="fr">Délai jusqu'à l'application livrée<span class="sub">Première étape comprise</span></span></div><div class="combien"><span class="ru">2 месяца</span><span class="fr">2 mois</span></div></div>
+      <div class="total"><div class="l"><span class="ru">Всего, до публикации</span><span class="fr">Total, jusqu'à la publication</span></div><div class="v accent"><span class="ru">400 000 ₽<span class="eq">≈ 4 200 €</span></span><span class="fr">4 200 €<span class="eq">400 000 ₽</span></span></div></div>
+    </div>
+  </div>
+
+  <div class="ecart">
+    <div>
+      <span class="m"><span class="ru">в 3,6 раза</span><span class="fr">3,6 fois</span></span>
+      <div class="d"><span class="ru">дешевле, чем минимальный бюджет приложения на французском рынке — и в 19 раз дешевле платформы того класса, что описан в задании</span><span class="fr">moins cher que le budget minimum d'une application sur le marché français — et dix-neuf fois moins qu'une plateforme de la classe décrite au cahier des charges</span></div>
+    </div>
+    <div>
+      <span class="m"><span class="ru">в три раза</span><span class="fr">trois fois</span></span>
+      <div class="d"><span class="ru">быстрее типового цикла: приложение выходит за два месяца вместо шести и более</span><span class="fr">plus rapide que le cycle habituel : l'application sort en deux mois au lieu de six ou plus</span></div>
+    </div>
+    <div>
+      <span class="m"><span class="ru">5 недель</span><span class="fr">5 semaines</span></span>
+      <div class="d"><span class="ru">до первых цифр по спросу — раньше, чем агентство обычно успевает согласовать техническое задание</span><span class="fr">avant les premiers chiffres sur la demande — avant même qu'une agence n'ait validé le cahier des charges</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VI · ЭТАП 1 ═══ -->
+<section>
+  <div class="entete">
+    <div class="repere">VI</div>
+    <div class="entete-txt">
+      <p class="eyebrow"><span class="ru">С чего начинаем</span><span class="fr">Par où l'on commence</span></p>
+      <h2><span class="ru">Первый этап</span><span class="fr">La première étape</span></h2>
+      <p class="chapo">
+        <span class="ru">Оплата раздельная. Первый этап даёт результат, которым можно пользоваться, даже если мы на нём остановимся, — и данные, на которых принимается решение о самом приложении.</span>
+        <span class="fr">Le règlement se fait par étapes. La première produit un résultat exploitable même si l'on s'arrête là — et les données sur lesquelles se décide l'application elle-même.</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="etapes">
+    <div class="etape souligne">
+      <div class="num">1</div>
+      <div>
+        <span class="nom"><span class="ru">Стратегия, воронка и тест аудитории</span><span class="fr">Stratégie, entonnoir et test d'audience</span></span>
+        <div class="det">
+          <p><span class="ru">Анализ французского рынка, выбор угла входа, сайт, бесплатная семидневная программа, сбор регистраций, email-цепочка, 20 сценариев коротких видео, замер реальной стоимости привлечения. Плюс точный список юридических пунктов для вашего адвоката.</span><span class="fr">Analyse du marché français, choix de l'angle d'entrée, site, programme offert de sept jours, capture des inscriptions, séquence d'e-mails, vingt scénarios de vidéos courtes, mesure du coût d'acquisition réel. Ainsi que la liste précise des points juridiques à couvrir avec votre avocat.</span></p>
+          <p><span class="ru">Сайт делается сразу в формате работающего веб-приложения. Это значит, что на нём проверяется не только спрос, но и сами экраны: какие из них люди открывают и возвращаются, а какие можно не строить вовсе. К моменту разработки состав приложения будет опираться на поведение живых пользовательниц, а не на предположения.</span><span class="fr">Le site est développé directement sous forme d'application web fonctionnelle. Il sert donc à tester non seulement la demande, mais les écrans eux-mêmes : lesquels sont ouverts et revisités, lesquels ne méritent pas d'être construits. Au moment du développement, la composition de l'application reposera sur le comportement d'utilisatrices réelles et non sur des hypothèses.</span></p>
+          <p><span class="ru"><strong>Этот этап решает судьбу проекта:</strong> если аудитория не собирается по расчётной цене, приложение не строим или меняем стратегию входа. Это защита от главной статьи лишних трат.</span><span class="fr"><strong>Cette étape décide de la suite :</strong> si l'audience ne se constitue pas au coût prévu, nous ne construisons pas l'application, ou nous changeons l'angle d'entrée. C'est la protection contre le principal poste de dépenses inutiles.</span></p>
+        </div>
+      </div>
+      <div>
+        <div class="prix"><span class="ru">250 000 ₽<span class="eq">≈ 2 600 €</span></span><span class="fr">2 600 €<span class="eq">250 000 ₽</span></span></div>
+        <span class="duree"><span class="ru">5 недель</span><span class="fr">5 semaines</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<!-- ═══ ФИНАЛ ═══ -->
+<section class="cloture">
+<div class="enveloppe">
+  <div class="ancre">
+    <div class="l">
+      <span class="k"><span class="ru">Первый этап</span><span class="fr">Première étape</span></span>
+      <span class="t"><span class="ru">Пять недель. Оплата на входе.</span><span class="fr">Cinq semaines. Réglable à l'ouverture.</span></span>
+      <span class="d"><span class="ru">По итогу вы либо получаете подтверждённую аудиторию и данные о том, какие экраны нужны, — либо экономите основную часть бюджета. Разработка приложения открывается только вашим решением.</span><span class="fr">À l'issue, soit vous disposez d'une audience confirmée et de données sur les écrans réellement utilisés, soit vous avez économisé l'essentiel du budget. Le développement de l'application ne s'engage que sur votre décision.</span></span>
+    </div>
+    <div class="v">
+      <span class="ru">250 000 ₽<span class="eq">≈ 2 600 € по курсу ЦБ на 8 августа 2026</span></span>
+      <span class="fr">2 600 €<span class="eq">Soit 250 000 ₽ au taux du 8 août 2026</span></span>
+    </div>
+  </div>
+
+  <div class="pied">
+    <span class="ru">Документ составлен в августе 2026 · Прототип доступен на <a href="https://eclosya.surge.sh" target="_blank" rel="noopener">eclosya.surge.sh</a><br>Курс пересчёта: 1 € = 94,84 ₽ (ЦБ РФ, 8 августа 2026). Рыночные цифры взяты из открытых французских источников 2026 года. Юридический блок — обзор, а не консультация: договорные документы составляет французский адвокат.</span>
+    <span class="fr">Document établi en août 2026 · Prototype accessible sur <a href="https://eclosya.surge.sh" target="_blank" rel="noopener">eclosya.surge.sh</a><br>Taux retenu : 1 € = 94,84 ₽ (Banque centrale de Russie, 8 août 2026). Les chiffres du marché proviennent de sources publiques françaises de 2026. Les éléments réglementaires constituent une synthèse et non un conseil juridique : la rédaction des documents contractuels revient à un avocat français.</span>
+  </div>
+</div>
+</section>
+
+<script>
+function setLang(l){
+  document.body.className = 'lang-' + l;
+  document.documentElement.lang = l;
+  document.getElementById('bFr').classList.toggle('actif', l==='fr');
+  document.getElementById('bRu').classList.toggle('actif', l==='ru');
+  document.title = l==='ru' ? 'Eclosya — объём проекта' : 'Eclosya — Périmètre du projet';
+}
+</script>
+</body>
+</html>
